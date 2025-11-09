@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* -------- Light theme hard reset (fixes accidental global dark styles) ------- */
+html, body, #root {
+  background-color: #f8fafc;   /* slate-50 */
+  color: #0f172a;              /* slate-900 */
+  min-height: 100%;
+}
+
+/* Make sure all content inherits the light theme unless explicitly overridden */
+* {
+  color: inherit;
+}
+
+/* Keep your dark-section utility strictly opt-in */
+.dark-section { color: #f8fafc; }
+.dark-section :is(.text-gray-600,.text-gray-700,.text-gray-800,.text-gray-900) { color:#f8fafc !important; }
+.dark-section :is(.text-gray-400,.text-gray-500) { color:#cbd5e1 !important; }
+.dark-section :is(.bg-white,.bg-gray-50,.bg-slate-50) { color:#0f172a !important; }
+
+/* -------- Helpful defaults for cards/typography to restore spacing ---------- */
+@layer components {
+  .app-container {
+    @apply max-w-7xl mx-auto px-6 pt-6;
+  }
+  .card {
+    @apply bg-white border border-gray-200 rounded-xl shadow-sm;
+  }
+  .section-block {
+    @apply card p-6 mb-6;
+  }
+  .section-title {
+    @apply text-xl font-bold text-gray-900;
+  }
+  .section-caption {
+    @apply text-sm text-gray-600 mt-1;
+  }
+}
