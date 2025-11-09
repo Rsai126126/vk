@@ -1,0 +1,38 @@
+# -------------------------
+# Python & Virtual Env
+# -------------------------
+.venv/
+env/
+venv/
+ENV/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# -------------------------
+# IDE / Editor Config Files
+# -------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# -------------------------
+# OS Generated Files
+# -------------------------
+.DS_Store
+Thumbs.db
+
+# -------------------------
+# Logs / Cache / Build
+# -------------------------
+*.log
+*.pot
+*.pyc
+*.mypy_cache/
+*.pytest_cache/
+*.coverage
+htmlcov/
+dist/
+build/
