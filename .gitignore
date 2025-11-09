@@ -36,3 +36,4 @@ Thumbs.db
 htmlcov/
 dist/
 build/
+.env
