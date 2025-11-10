@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import reconciliation, delivery_confirmation
+from routers import reconciliation, delivery_confirmation, no_sonum
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -15,6 +15,7 @@ app.add_middleware(
 
 app.include_router(reconciliation.router, prefix="/reconciliation", tags=["Reconciliation"])
 app.include_router(delivery_confirmation.router, prefix="/delivery", tags=["Delivery Confirmation"])
+app.include_router(no_sonum.router, prefix="/no-sonum", tags=["NO_SONUM"])
 
 @app.get("/")
 def home():

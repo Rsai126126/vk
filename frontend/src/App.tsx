@@ -59,7 +59,7 @@
 // }
 
 // src/App.tsx
-import { NavLink, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { NavLink, Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 
 // Pages
@@ -79,12 +79,10 @@ export default function App() {
       timeZone: "America/Chicago",
     }) + " CT";
 
-  const { pathname } = useLocation();
-
   const tabs = [
-    { to: "/reconciliation", label: "Ship Confirmation Reconciliation" },
+    { to: "/reconciliation", label: "Ship Confirmation (EDI 945) Reconciliation" },
     { to: "/delivery", label: "Delivery Confirmation" },
-    { to: "/section-three", label: "Section 3" },
+    { to: "/section-three", label: "NO_SONUM" },
   ];
 
   return (

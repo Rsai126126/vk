@@ -1,5 +1,3 @@
-
-import React from "react";
 import type { StuckShipment } from "../types";
 
 interface Props {
@@ -35,8 +33,7 @@ export default function DataTable({ data }: Props) {
 
         <tbody className="bg-white text-sm">
           {data.map((row, i) => {
-            const age = row["Age Hours"] ?? null;
-            const badge = row["Age Badge Class"] ?? "badge-neutral";
+            const age = row.AgeHours ?? null;
             const severity = row.Severity ?? "unknown";
 
             const slaChip =

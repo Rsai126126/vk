@@ -4,7 +4,7 @@
 import type { ReconciliationResult, StuckShipment } from "../types";
 
 // Try a few common column names safely
-function pick<T extends object>(row: any, keys: string[], fallback = ""): string {
+function pick(row: any, keys: string[], fallback = ""): string {
   for (const k of keys) {
     if (row && row[k] != null && String(row[k]).trim() !== "") return String(row[k]).trim();
   }
@@ -42,8 +42,6 @@ export function reconcileData(
 ): ReconciliationResult {
   // keys we will attempt to match on (tunable)
   const keyFromDHL = (r: any) =>
-    pick(r, ["Pick Number", "PickNumber", "Pickticket", "Pick Ticket", "Pick_Ticket"]);
-  const keyFromAX = (r: any) =>
     pick(r, ["Pick Number", "PickNumber", "Pickticket", "Pick Ticket", "Pick_Ticket"]);
   const keyFromEDI = (r: any) =>
     // sometimes SalesOrderNumber ties to AX Order, but we’ll try pick/purchase first

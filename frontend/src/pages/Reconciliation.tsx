@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import {
-  Download, Mail, PlayCircle, RotateCcw, Loader2, CheckCircle2,
-  Filter, ShieldAlert, TrendingUp, TrendingDown, DollarSign, Clock, Zap, RefreshCw
+  Download, PlayCircle, RotateCcw, Loader2, CheckCircle2,
+  Filter, ShieldAlert
 } from 'lucide-react';
 
 import Section from '../components/Section';
@@ -13,8 +13,7 @@ import TrendLineChart from '../components/TrendLineChart';
 import CustomBarCompareChart from '../components/CustomBarCompareChart';
 
 import { parseCSV } from '../utils/csv-parser';
-import { reconcileData, generateEmailDraft } from '../utils/reconciliation';
-import { exportToCSV } from '../utils/export';
+import { reconcileData } from '../utils/reconciliation';
 import type { ReconciliationResult, StuckShipment } from '../types';
 import { saveSnapshotAPI, loadRecentAPI, type Snapshot } from '../services/reports';
 import { postReconciliationExcel } from "../services/reconciliationApi";
@@ -54,12 +53,7 @@ export default function Reconciliation() {
   const [severityFilter, setSeverityFilter] = useState<'all' | 'high' | 'medium' | 'low'>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [emailDraft, setEmailDraft] = useState('');
-  const [emailReady, setEmailReady] = useState(false);
-
-  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
   const [history, setHistory] = useState<Snapshot[]>([]);
-  const [autoRefresh, setAutoRefresh] = useState(false);
 
   useEffect(() => {
     if (!toastMessage) return;
@@ -70,14 +64,6 @@ export default function Reconciliation() {
   // initial history
   useEffect(() => { loadRecentAPI(7).then(setHistory).catch(console.error); }, []);
 
-  useEffect(() => {
-    if (!autoRefresh) return;
-    const id = setInterval(() => {
-      loadRecentAPI(7).then(setHistory).catch(console.error);
-      setToastMessage('Data refreshed');
-    }, 60000);
-    return () => clearInterval(id);
-  }, [autoRefresh]);
 
   const handleRunReconciliation = async () => {
     if (!dhlFile || !b2biFile || !axFile) {
@@ -94,7 +80,6 @@ export default function Reconciliation() {
 
       const reconciliationResult = reconcileData(dhlData, b2biData, axData);
       setResult(reconciliationResult);
-      setEmailDraft(''); setEmailReady(false);
       setSelectedWarehouse('All Warehouses'); setSeverityFilter('all'); setSearchQuery('');
       setToastMessage('Reconciliation complete');
 
@@ -139,7 +124,6 @@ export default function Reconciliation() {
       return;
     }
     try {
-      setShowDownloadMenu(false);
       const blob = await postReconciliationExcel(dhlFile, b2biFile, axFile);
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -194,8 +178,6 @@ export default function Reconciliation() {
     return (result.summary.totalFailures / result.summary.totalShipments) * 100;
   }, [result]);
 
-  const failureRateBaselinePct = 1.8;
-  const failureRateDeltaPct = failureRateTodayPct - failureRateBaselinePct;
 
   const trendChartData = useMemo(() => toTrend(history), [history]);
 
